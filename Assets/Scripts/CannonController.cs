@@ -9,7 +9,7 @@ public class CannonController : MonoBehaviour
   
 	public GameObject cannon;
 	public GameObject prefabProjectile;
-	public float velocityMult = 9000f;
+	public float velocityMult = 19000f;
 	public GameObject launchPoint;
 	public float fireRate = 0.5F;
 	
