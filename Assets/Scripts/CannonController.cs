@@ -9,21 +9,25 @@ public class CannonController : MonoBehaviour
   
 	public GameObject cannon;
 	public GameObject prefabProjectile;
-	public float velocityMult = 8f;
+	public float velocityMult = 9000f;
 	public GameObject launchPoint;
+	public float fireRate = 0.5F;
 	
     [Header("Set Dynamically")]
     // public GameObject launchPoint;
+	public bool didFire = false;
     public Vector3 launchPos; 
-	
 	private Rigidbody projectileRigidbody;  	
     public GameObject projectile;
-    // Start is called before the first frame update\
+
+	
+  
+  private float nextFire = 0.0F;
 	
 	void Awake(){
 	   // Transform launchPointTrans = transform.FindChild("LaunchPoint");
         //launchPoint = launchPointTrans.gameObject;
-        launchPoint.SetActive( false );
+        // launchPoint.SetActive( false );
         launchPos = launchPoint.transform.position;  
 	}
 	
@@ -32,10 +36,7 @@ public class CannonController : MonoBehaviour
         
     }
 	
-	private void FireCannon(){
-		
-	
-	}
+
 
 
 	
@@ -45,22 +46,23 @@ public class CannonController : MonoBehaviour
     {
 		
 
-        if (Input.GetKey ("space")) {
-			
+        if (Input.GetKey ("space") && Time.time > nextFire ) {
+			nextFire = Time.time + fireRate;
 			projectile = Instantiate( prefabProjectile ) as GameObject;
 			projectile.transform.position = launchPos;
 			projectileRigidbody = projectile.GetComponent<Rigidbody>();
-            projectileRigidbody.velocity = launchPos * velocityMult;
-            projectile = null;
+			projectileRigidbody.velocity = launchPoint.transform.up * velocityMult;
+			projectile = null;
+
 		}
-        if (Input.GetKey ("up")) {
+        if (Input.GetKey ("left")) {
 			print(cannon.transform.rotation.z);
-			if(cannon.transform.localRotation.z < 0){
+			if(cannon.transform.localRotation.z < 0.7){
 				transform.Rotate(0, 0, 1);
 				launchPos = launchPoint.transform.position;  
 			}
 		}
-		if (Input.GetKey ("down")) {
+		if (Input.GetKey ("right")) {
 			print(cannon.transform.rotation.z);
 			if(cannon.transform.localRotation.z > -0.7){
 				transform.Rotate(0, 0, -1);
