@@ -10,6 +10,7 @@ public class CannonController : MonoBehaviour
 
 	public Text shotsText;
 	public Text collectedText;
+	public Text winText;
 	public GameObject cannon;
 	public GameObject prefabProjectile;
 	public float velocityMult = 19000f;
@@ -52,6 +53,10 @@ public class CannonController : MonoBehaviour
     void Update()
     {
 		 collectedText.text = "Cubes Collected: " + collected.ToString();
+
+		 if (collected > 5){
+			 winText.text = "You Win!";
+		 }
 
         if (Input.GetKey ("space") && Time.time > nextFire && shotsLeft > 0 ) {
 			nextFire = Time.time + fireRate;
