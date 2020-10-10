@@ -1,18 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class CannonController : MonoBehaviour
 {
     [Header("Set in Inspector")]
 
-  
+	public Text shotsText;
+	public Text collectedText;
 	public GameObject cannon;
 	public GameObject prefabProjectile;
 	public float velocityMult = 19000f;
 	public GameObject launchPoint;
-	public float fireRate = 0.5F;
-	
+	public float fireRate = 0.9F;
+	public int collected = 0;
+	private int shotsLeft = 5;
+
+
     [Header("Set Dynamically")]
     // public GameObject launchPoint;
 	public bool didFire = false;
@@ -33,7 +39,8 @@ public class CannonController : MonoBehaviour
 	
     void Start()
     {
-        
+     shotsText.text = "Shots Left: " + shotsLeft.ToString();
+	 collectedText.text = "Cubes Collected: " + collected.ToString();   
     }
 	
 
@@ -44,15 +51,17 @@ public class CannonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		
+		 collectedText.text = "Cubes Collected: " + collected.ToString();
 
-        if (Input.GetKey ("space") && Time.time > nextFire ) {
+        if (Input.GetKey ("space") && Time.time > nextFire && shotsLeft > 0 ) {
 			nextFire = Time.time + fireRate;
 			projectile = Instantiate( prefabProjectile ) as GameObject;
 			projectile.transform.position = launchPos;
 			projectileRigidbody = projectile.GetComponent<Rigidbody>();
 			projectileRigidbody.velocity = launchPoint.transform.up * velocityMult;
 			projectile = null;
+			shotsLeft = shotsLeft - 1;
+			shotsText.text = "Shots Left: " + shotsLeft.ToString();   
 
 		}
         if (Input.GetKey ("left")) {
